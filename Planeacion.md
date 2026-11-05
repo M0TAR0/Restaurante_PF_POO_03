@@ -18,6 +18,7 @@ _A t r i b u t o s_
 
 _M é t o d o s_
 
+- ver_menu()
 - solicitar_mesa()
 - solicitar_comida()
 - comer()
@@ -112,8 +113,34 @@ _M é t o d o s_
 
 En esta sección se describirán los procesos a realizar durante el programa, los cuáles serán ejecutada de manera paralela por medio de hilos.
 
+### 20 Hilos - COMENSALES
+
+Cada hilo representará a un comensal, el cuál realizará una de estas acciones:
+
+- LLegar y solicitar una mesa
+- - Si hay va a la mesa, si no empieza a esperar.
+- Ver el menú
+- Pedir de comer
+- Comer
+- Solicitar cuenta
+- Pagar (Tarjeta, efectivo)
+- Dejar una reseña
+- Irse
+
+### 3 Hilos - MESEROS
+
+Cada hilo representará a un mesero, los cuáles podrán realizar una de estas acciones (si están disponibles):
+
+- Tomar orden
+- Llevar orden a cocina
+- LLevar orden a mesa
+- Cobrar
+
 ## IDEAS ADICIONALES
 
 En esta sección mencionaremos ideas adicionales a implementar para el programa, las cuales se podrán ir añadiendo conforme la funcinoalidad principal del programa sea completada.
 
 **Lista de Ideas**
+
+- Hacer todos los tiempos aleatorios
+- Que los meseros puedan limpiar mesas tambien
