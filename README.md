@@ -1,2 +1,15 @@
-# Restaurante_PF_POO_03
-El objetivo de este repositorio es mostrar el proceso de elaboración del proyecto final "Restaurante" para la materia de Programación Orientada a Objetos. Se busca mostrar el código funciona, así como las herramientas empleadas para su realización.
+### _Universidad Nacional Autónoma de México_ <br>
+Programación Orientada a Objetos <br>
+Grupo 03
+
+**Profesor:** Diego Javier Santamaría Najera
+
+**Integrantes de equipo**
+- Guadarrama Climaco Ivan Alexei
+- Maza Córdova Brandon de Jesús
+- Ontiveros Mota Romel
+- Rodríguez May Diego Antonio
+- Soriano Crisóstomo Aldo Rodrigo
+
+# Restaurante
+A continuación irá el desglose del proyecyo.
