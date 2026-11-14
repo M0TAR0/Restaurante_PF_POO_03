@@ -40,12 +40,12 @@ public class Comensal {
 
 	//Métodos o acciones del Comensal
 	
-	public ver_menu(){}
-	public solicitar_mesa(){}
-	public solicitar_comida{}
-	public comer(){}
-	public solicitar_cuenta(){}
-	public calificar(){}
+	public void ver_menu(){}
+	public void solicitar_mesa(){}
+	public void solicitar_comida(){}
+	public void comer(){}
+	public void solicitar_cuenta(){}
+	public void calificar(){}
 	
 	//Método para generar nombre aleatorio.
 	public String generar_nombre_aleatorio(){

@@ -9,7 +9,7 @@ public class Bebida extends Alimento {
     public static final String Estado[]={"En Proceso","Lista","Entregada"};
     private int Tiempo_preparacion;
     private float total;
-    private String estadoactual;
+    private String estadoactual;//Aqui se guarda el estado de preparación.
 
     //Método constructor de Bebida.
     public Bebida(String nombre,float precio,float Tiempo_de_preparacion,Comensal comensal,Mesa mesa,String Lista_P[]){
@@ -22,7 +22,7 @@ public class Bebida extends Alimento {
 
     //Métodos auxiliares o getters y setters.
 
-    
+	    
 
 
 
@@ -46,7 +46,7 @@ public class Bebida extends Alimento {
                 this.Tiempo_preparacion=3000;
                 break;
             default:
-                System.out.println("Bebida no disponible.");
+                this.Tiempo_preparacion=2000;
                 break;
         }
 
