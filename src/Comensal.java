@@ -39,14 +39,14 @@ public class Comensal {
 
 
 	//Métodos o acciones del Comensal
-	/*
-	public ver_menu();
-	public solicitar_mesa();
-	public solicitar_comida;
-	public comer();
-	public solicitar_cuenta();
-	public calificar();
-	*/
+	
+	public ver_menu(){}
+	public solicitar_mesa(){}
+	public solicitar_comida{}
+	public comer(){}
+	public solicitar_cuenta(){}
+	public calificar(){}
+	
 	//Método para generar nombre aleatorio.
 	public String generar_nombre_aleatorio(){
 		Random random=new Random();
