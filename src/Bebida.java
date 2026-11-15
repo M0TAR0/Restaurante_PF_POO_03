@@ -61,9 +61,11 @@ public class Bebida extends Alimento {
         }
 
     }
+
     public void calcular_total(){
         this.total=getPrecio();
     }
+
     public void setEstado(){
         this.estadoactual=Estado[0];
         System.out.println("La bebida ["+getNombre()+"] está: "+this.estadoactual);
@@ -85,6 +87,7 @@ public class Bebida extends Alimento {
         System.out.println("La bebida ["+getNombre()+"] está: "+this.estadoactual);
 
     }
+    
     public String getEstado(){
         return this.estadoactual;
     }

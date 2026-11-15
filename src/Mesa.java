@@ -12,10 +12,10 @@ public class Mesa {
 	private boolean Estado;
 
 	//Método constructor de Mesa.
-	public Mesa(Comensal comensal,boolean Estado){
+	public Mesa(Comensal comensal){
 		setIDmesa();
 		this.nombre_comensal=comensal.getNombre();
-		this.Estado=true; //Estado en true lo tomare como false: no esta libre y true: como esta libre,
+		this.Estado=true; //Estado en true lo tomare como, false: no esta libre y true: como esta libre,
 	}
 		
 	public int getIDmesa(){
