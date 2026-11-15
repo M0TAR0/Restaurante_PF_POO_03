@@ -1,3 +1,8 @@
+/*
+Esta clase tiene como objetivo crear de forma aleatoria la bebida de una lista de opciones de bebidas
+y dependiendo de la bebida se establece el tiempo de preparación por ejemplo un cafe o un te tarda más que 
+una coca ya que pues la coca y las demás bebidas ya estan hechas.
+*/
 
 import java.util.Random;
 
@@ -10,10 +15,11 @@ public class Bebida extends Alimento {
     private int Tiempo_preparacion;
     private float total;
     private String estadoactual;//Aqui se guarda el estado de preparación.
+    private String bebidaElegida;
 
     //Método constructor de Bebida.
-    public Bebida(String nombre,float precio,float Tiempo_de_preparacion,Comensal comensal,Mesa mesa,String Lista_P[]){
-        super(nombre,precio,Tiempo_de_preparacion);
+    public Bebida(float precio,Comensal comensal,Mesa mesa){
+        super("",precio,0);
         this.nombre_comensal=comensal.getNombre();
         this.ID_mesa=mesa.getIDmesa();
         calcular_tiempo_de_preparacion(Lista_P);
@@ -22,27 +28,31 @@ public class Bebida extends Alimento {
 
     //Métodos auxiliares o getters y setters.
 
-	    
+    public String getBebida(){
+        return this.bebidaElegida;
+    }
 
-
+    public int getTiempoD(){
+        return this.Tiempo_preparacion;
+    }
 
     //Acciones o métodos de Bebida
     public void calcular_tiempo_de_preparacion(String Lista_P[]){
         Random random=new Random();
-        int beb=random.nextInt(5)+1;
-        
-        switch (beb) {
-            case 0:
+        int indice=random.nextInt(Lista_P.length);
+        this.bebidaElegida=Lista_P[indice];
+
+        switch (this.bebidaElegida) {
+            case "Coca":
                 this.Tiempo_preparacion=1000;
-            case 1:
+            case "Agua":
                 this.Tiempo_preparacion=1000;
-            case 2:
+            case "Jarritos":
                 this.Tiempo_preparacion=1000;
                 break;
-            case 3:
+            case "Cafe":
                 this.Tiempo_preparacion=3000;
-                break;
-            case 4:
+            case "Te":
                 this.Tiempo_preparacion=3000;
                 break;
             default:
@@ -51,7 +61,9 @@ public class Bebida extends Alimento {
         }
 
     }
-    public void calcular_total(){}
+    public void calcular_total(){
+        this.total=getPrecio();
+    }
     public void setEstado(){
         this.estadoactual=Estado[0];
         System.out.println("La bebida ["+getNombre()+"] está: "+this.estadoactual);

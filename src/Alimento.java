@@ -2,6 +2,7 @@ public class Alimento {
     private String nombre;
     private float precio;
     private float Tiempo_de_preparacion;
+    private String Lista_P[];
 
     //Método constructor
     public Alimento(String nombre,float precio,float Tiempo_de_preparacion){
