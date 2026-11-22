@@ -17,6 +17,12 @@ public class Bebida extends Alimento {
     private String estadoactual;//Aqui se guarda el estado de preparación.
     private String bebidaElegida;
 
+    // Nuevo constructor sin parámetros para usarlo en Alimento[]
+    public Bebida() {
+        super("", 0.0f, 0.0f);
+        calcular_tiempo_de_preparacion(Lista_P);
+    }
+
     //Método constructor de Bebida.
     public Bebida(float precio,Comensal comensal,Mesa mesa){
         super("",precio,0);
@@ -45,20 +51,31 @@ public class Bebida extends Alimento {
         switch (this.bebidaElegida) {
             case "Coca":
                 this.Tiempo_preparacion=1000;
+                setPrecio(25.0f);
+                break;
             case "Agua":
                 this.Tiempo_preparacion=1000;
+                setPrecio(20.0f);
+                break;
             case "Jarritos":
                 this.Tiempo_preparacion=1000;
+                setPrecio(22.0f);
                 break;
             case "Cafe":
                 this.Tiempo_preparacion=3000;
+                setPrecio(35.0f);
+                break;
             case "Te":
                 this.Tiempo_preparacion=3000;
+                setPrecio(30.0f);
                 break;
             default:
                 this.Tiempo_preparacion=2000;
+                setPrecio(25.0f);
                 break;
         }
+         setNombre(this.bebidaElegida);
+        setTiempoDP(this.Tiempo_preparacion);
 
     }
 
