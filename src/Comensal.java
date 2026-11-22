@@ -3,9 +3,11 @@ public class Comensal extends Persona {
   // Atributos básicos
   private float tiempoL;
   private float tiempoF;
+  private mainRestaurante restaurante;
 
   // Método constructor
-  public Comensal(float tiempoL, float tiempoF) {
+  public Comensal(float tiempoL, float tiempoF, mainRestaurante restaurante) {
+    this.restaurante = restaurante;
     this.tiempoL = tiempoL;
     this.tiempoF = tiempoF;
   }
@@ -22,17 +24,21 @@ public class Comensal extends Persona {
   public void ver_menu() {}
 
   public void solicitar_mesa(Mesa mesa) {
-    System.out.println("Comensal: " + getNombre() + " Solicita mesa.");
+    System.out.println("[COMENSAL] " + getNombre() + " Solicita mesa.");
     if (mesa.getEstado() == true) {
-      System.out.println("Se asigno la mesa: " + mesa.getIDmesa() + " Al comensal: " + getNombre());
+      System.out.println(
+          "Se asigno la mesa: " + mesa.getIDmesa() + " Al comensal: [COMENSAL] " + getNombre());
       mesa.setEstado();
     } else {
       System.out.println("No hay mesas disponibles.");
     }
   }
 
-  public void solicitar_comida(Mesero mesero) {
-    // mesero.solicitar(comida);
+  // El comensal elige sus alimentos y los deja como acción pendiente (prioridad 2) para un mesero
+  public void solicitar_comida(Mesa mesa) {
+    // Lista de alimentos de ejemplo, falta que el comensal los elija del menú
+    Alimento[] alimentos = {new Alimento("Platillo de ejemplo", 100, 8)};
+    restaurante.agregar_accion(2, this, mesa, alimentos);
   }
 
   public void comer() {}
@@ -43,6 +49,9 @@ public class Comensal extends Persona {
 
   @Override
   public void run() {
-    System.out.println("Soy " + this.getNombre() + ", mi edad es " + this.getEdad());
+
+    // Falta: asignación real de mesa, esperar a que le sirvan, comer y encolar la acción 3 (cobrar)
+    Mesa mesa = new Mesa(this);
+    this.solicitar_comida(mesa);
   }
 }

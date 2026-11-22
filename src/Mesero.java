@@ -18,6 +18,13 @@ public class Mesero extends Persona {
   Random random = new Random();
   int tiempo_de_traslado;
   public boolean mesero_libre = true;
+  Cocina cocina;
+  mainRestaurante restaurante;
+
+  public Mesero(Cocina cocina, mainRestaurante restaurante) {
+    this.cocina = cocina;
+    this.restaurante = restaurante;
+  }
 
   // MÉTODOS
   // 1. El mesero toma una orden
@@ -35,26 +42,53 @@ public class Mesero extends Persona {
     }
   }
 
-  // Se ocupa orden y cómo comensal va a pedir alimentos para continuar
-
-  public void tomar_orden(
-      String
-          nombre_comensal) { // Crea una orden a partir de una lista de alimentos y bebidas que el
-    // comensal haya elegido
+  // Toma los alimentos que el comensal quiere pedir y crea la orden
+  public Orden tomar_orden(Comensal comensal, Mesa mesa, Alimento[] alimentos) {
     this.moverse();
-
-    // lista_de_alimentos = alimentos;
-    // Orden orden = new Orden(nombre_comensal, lista de alimentos,);
-    // return orden;
+    try {
+      sleep(500); // Toma de orden: 5 s simulados
+    } catch (Exception e) {
+      System.out.println("Error al tomar orden");
+    }
+    System.out.println(
+        "[MESERO] " + this.getNombre() + " tomó la orden de [COMENSAL] " + comensal.getNombre());
+    // Pendiente: pasar la lista de alimentos a Orden cuando esté desarrollada
+    return new Orden(comensal, mesa);
   }
 
-  public void llevar_a_cocina() {}
+  public void llevar_a_cocina(Orden orden) {
+    this.moverse();
+    cocina.preparar(orden.getIDmesa());
+    // Cuando la cocina termina, se agenda la acción de servir
+    restaurante.agregar_accion(1, orden);
+  }
 
-  public void entregar_orden() {}
+  public void entregar_orden(Orden orden) {
+    this.moverse();
+    System.out.println(
+        "[MESERO] " + this.getNombre() + " entregó la orden en la mesa " + orden.getIDmesa());
+  }
 
-  public void cobrar() {}
+  public void cobrar(Orden orden) {
+    this.moverse();
+    try {
+      sleep(200); // Cobro y ticket: 2 s simulados
+    } catch (Exception e) {
+      System.out.println("Error al cobrar");
+    }
+    this.generar_ticket(orden);
+    restaurante.registrar_cobro(orden.getTotal());
+  }
 
-  public void generar_ticket() {}
+  public void generar_ticket(Orden orden) {
+    System.out.println(
+        "TICKET | "
+            + orden.getNombreComensal()
+            + " | Mesa "
+            + orden.getIDmesa()
+            + " | $"
+            + orden.getTotal());
+  }
 
   // MÉTODO RUN:
   // Método principal del hilo, que llevará la lógica de las acciones a realizar por cada mesero:
@@ -62,18 +96,37 @@ public class Mesero extends Persona {
   // 2. Al encontrar una actividad, cambiar a ocupado y evaluar qué hacer para cada actividad
   // 3. Realizar la acción: Traslado + Ejecutar acción
   // 4. Cambiar a desocupado y repetir
-  // Asumimos que las acciones se irán guardando en una lista de prioridad
+  // Las acciones se guardan en una cola de prioridad (mainRestaurante):
+  // 1 = servir comida, 2 = tomar orden y llevar a cocina, 3 = cobrar
 
   @Override
   public void run() {
-    // while(true) {
-    //     if mesero_libre {
-    // 1. Checar si la lista de tareas no está vacía
-    // 2. Obtener qué acción realizar
-    // 3. Determinar qué hacer
-    //     }
-    // }
+    while (restaurante.cobrados < restaurante.TOTAL_COMENSALES) {
+      mainRestaurante.Accion accion = restaurante.acciones.poll(); // Toma la de mayor prioridad
+      if (accion == null) { // No hay acciones, espera un momento
+        try {
+          sleep(50);
+        } catch (Exception e) {
+          System.out.println("Error en la espera del mesero");
+        }
+        continue;
+      }
 
-    System.out.println("Soy " + this.getNombre() + ", mi edad es " + this.getEdad());
+      mesero_libre = false;
+
+      switch (accion.prioridad) {
+        case 1:
+          entregar_orden(accion.orden);
+          break;
+        case 2:
+          Orden orden = tomar_orden(accion.comensal, accion.mesa, accion.alimentos);
+          llevar_a_cocina(orden);
+          break;
+        case 3:
+          cobrar(accion.orden);
+          break;
+      }
+      mesero_libre = true;
+    }
   }
 }
