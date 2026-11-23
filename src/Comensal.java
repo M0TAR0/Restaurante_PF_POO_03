@@ -5,8 +5,8 @@ public class Comensal extends Persona {
   // Atributos básicos
   private mainRestaurante restaurante;
   private Orden ordenComensal;
-  private boolean servido = false; 
-  private int tiempo_de_espera; 
+  private boolean servido = false;
+  private int tiempo_de_espera;
 
   // Método constructor
   public Comensal(mainRestaurante restaurante) {
@@ -30,9 +30,10 @@ public class Comensal extends Persona {
   // Métodos o acciones del Comensal
   public void esperar() { // Método empleado para simular el tiempo de espera de un comensal
     Random random = new Random();
-    tiempo_de_espera = random.nextInt(300, 600); // Tiempo de espera: 3 a 6 s 
+    tiempo_de_espera = random.nextInt(300, 600); // Tiempo de espera: 3 a 6 s
     try {
       sleep(tiempo_de_espera);
+      System.out.println("[COMENSAL] " + this.getNombre() + " está esperando para entrar...");
     } catch (Exception e) {
       System.out.println("Error en la espera del comensal");
     }
@@ -51,7 +52,7 @@ public class Comensal extends Persona {
 
   // El comensal elige sus alimentos y los deja como acción pendiente (prioridad 2) para un mesero
   public void solicitar_comida(Mesa mesa) {
-     Random random = new Random();
+    Random random = new Random();
     Alimento[] alimentos;
 
     if (random.nextBoolean()) {
@@ -67,6 +68,7 @@ public class Comensal extends Persona {
     Random random = new Random();
     try {
       sleep(random.nextInt(1000, 2000)); // Comiendo: 10 a 20 s simulados
+      System.out.println("[COMENSAL] " + this.getNombre() + " está comiendo!");
     } catch (Exception e) {
       System.out.println("Error mientras el comensal comía");
     }
