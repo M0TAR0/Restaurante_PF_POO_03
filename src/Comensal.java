@@ -1,4 +1,6 @@
 /** Comensal */
+import java.util.Random;
+  
 public class Comensal extends Persona {
   // Atributos básicos
   private float tiempoL;
@@ -36,8 +38,15 @@ public class Comensal extends Persona {
 
   // El comensal elige sus alimentos y los deja como acción pendiente (prioridad 2) para un mesero
   public void solicitar_comida(Mesa mesa) {
-    // Lista de alimentos de ejemplo, falta que el comensal los elija del menú
-    Alimento[] alimentos = {new Alimento("Platillo de ejemplo", 100, 8)};
+     Random random = new Random();
+    Alimento[] alimentos;
+
+    if (random.nextBoolean()) {
+      alimentos = new Alimento[] {new Bebida(), new Comida(), new Postre()};
+    } else {
+      alimentos = new Alimento[] {new Bebida(), new Comida()};
+    }
+
     restaurante.agregar_accion(2, this, mesa, alimentos);
   }
 
