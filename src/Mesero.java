@@ -69,18 +69,18 @@ public class Mesero extends Persona {
     orden.getComensal().setServido(true); // Avisa al comensal que ya puede comer
   }
 
-  public void cobrar(Orden orden) {
+  public void cobrar(Orden orden,Comensal comensal) {
     this.moverse();
     try {
       sleep(200); // Cobro y ticket: 2 s simulados
     } catch (Exception e) {
       System.out.println("Error al cobrar");
     }
-    this.generar_ticket(orden);
+    this.generar_ticket(orden,comensal);
     restaurante.registrar_cobro(orden.getTotal());
   }
 
-  public void generar_ticket(Orden orden) {
+  public void generar_ticket(Orden orden, Comensal comensal) {
     System.out.println(
         "TICKET | "
             + orden.getNombreComensal()
@@ -88,6 +88,11 @@ public class Mesero extends Persona {
             + orden.getIDmesa()
             + " | $"
             + orden.getTotal());
+    if (comensal != null && comensal.getAlimentos() != null) {
+      for (Alimento a : comensal.getAlimentos()) {
+        System.out.println("  - " + a.getNombre() + " ($" + a.getPrecio() + ")");
+      }
+    }
   }
 
   // MÉTODO RUN:
@@ -101,7 +106,7 @@ public class Mesero extends Persona {
 
   @Override
   public void run() {
-    while (restaurante.cobrados < restaurante.TOTAL_COMENSALES) {
+    while (restaurante.getCobrados() < restaurante.TOTAL_COMENSALES) {
       mainRestaurante.Accion accion = restaurante.siguiente_accion(); // Toma la de mayor prioridad
       if (accion == null) { // No hay acciones, espera un momento
         try {
@@ -124,7 +129,9 @@ public class Mesero extends Persona {
           llevar_a_cocina(orden);
           break;
         case 3:
-          cobrar(accion.orden);
+          if (accion.orden != null) {
+            cobrar(accion.orden, accion.orden.getComensal());
+          }
           break;
       }
       mesero_libre = true;

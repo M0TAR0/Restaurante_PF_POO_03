@@ -27,6 +27,7 @@ public class Orden {
     return this.nombre_comensal;
   }
 
+  
   public Comensal getComensal() {
     return this.comensal;
   }

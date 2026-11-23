@@ -7,6 +7,7 @@ public class Comensal extends Persona {
   private Orden ordenComensal;
   private boolean servido = false;
   private int tiempo_de_espera;
+  private Alimento[] alimentos;
 
   // Método constructor
   public Comensal(mainRestaurante restaurante) {
@@ -17,6 +18,10 @@ public class Comensal extends Persona {
   //Getters y Setters
   public Orden getOrden() {
     return this.ordenComensal;
+  }
+
+  public Alimento[] getAlimentos(){
+    return this.alimentos;
   }
 
   public void setServido(boolean servido) {
@@ -53,15 +58,14 @@ public class Comensal extends Persona {
   // El comensal elige sus alimentos y los deja como acción pendiente (prioridad 2) para un mesero
   public void solicitar_comida(Mesa mesa) {
     Random random = new Random();
-    Alimento[] alimentos;
 
     if (random.nextBoolean()) {
-      alimentos = new Alimento[] {new Bebida(), new Comida(), new Postre()};
+      this.alimentos = new Alimento[] {new Bebida(), new Comida(), new Postre()};
     } else {
-      alimentos = new Alimento[] {new Bebida(), new Comida()};
+      this.alimentos = new Alimento[] {new Bebida(), new Comida()};
     }
 
-    restaurante.agregar_accion(2, this, mesa, alimentos);
+    restaurante.agregar_accion(2, this, mesa, this.alimentos);
   }
 
   public void comer() {

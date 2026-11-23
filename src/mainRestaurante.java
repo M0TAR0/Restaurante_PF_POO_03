@@ -63,6 +63,10 @@ public class mainRestaurante {
     cobrados++;
   }
 
+  public synchronized int getCobrados() {
+    return cobrados;
+  }
+
   public synchronized void registrar_calificacion(int calificacion) {
     SumaCalificaciones += calificacion;
     totalCalificaciones++;
@@ -75,7 +79,6 @@ public class mainRestaurante {
     double promedio = SumaCalificaciones / totalCalificaciones;
     return promedio;
   }
-
   // ===== AQUÍ EMPIEZA LA FUNCION MAIN ======
 
   public void iniciar()
