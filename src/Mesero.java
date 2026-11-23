@@ -66,6 +66,7 @@ public class Mesero extends Persona {
     this.moverse();
     System.out.println(
         "[MESERO] " + this.getNombre() + " entregó la orden en la mesa " + orden.getIDmesa());
+    orden.getComensal().setServido(true); // Avisa al comensal que ya puede comer
   }
 
   public void cobrar(Orden orden) {
@@ -119,6 +120,7 @@ public class Mesero extends Persona {
           break;
         case 2:
           Orden orden = tomar_orden(accion.comensal, accion.mesa, accion.alimentos);
+          accion.comensal.setOrden(orden);
           llevar_a_cocina(orden);
           break;
         case 3:

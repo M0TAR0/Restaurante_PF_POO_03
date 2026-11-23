@@ -1,13 +1,16 @@
 public class Orden {
+  private Comensal comensal;
   private String nombre_comensal;
   private int ID_mesa;
-  private Bebida bebidaO;
+  private Alimento[] alimentos;
+  private String estadoActual;
   private static String Estado[] = {"En proceso", "Lista", "Entregada"};
   private int Tiempo_preparacion;
   private float total;
 
-  // Nuevo método constructor
- public Orden(Comensal comensal, Mesa mesa, Alimento[] alimentos) {
+  // Método constructor
+  public Orden(Comensal comensal, Mesa mesa, Alimento[] alimentos) {
+    this.comensal = comensal;
     this.nombre_comensal = comensal.getNombre();
     this.ID_mesa = mesa.getIDmesa();
     this.alimentos = alimentos;
@@ -22,6 +25,10 @@ public class Orden {
   // Getters
   public String getNombreComensal() {
     return this.nombre_comensal;
+  }
+
+  public Comensal getComensal() {
+    return this.comensal;
   }
 
   public int getIDmesa() {
