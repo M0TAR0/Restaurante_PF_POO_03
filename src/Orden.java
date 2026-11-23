@@ -6,11 +6,13 @@ public class Orden {
   private int Tiempo_preparacion;
   private float total;
 
-  // Método constructor
-  public Orden(Comensal comensal, Mesa mesa) {
+  // Nuevo método constructor
+ public Orden(Comensal comensal, Mesa mesa, Alimento[] alimentos) {
     this.nombre_comensal = comensal.getNombre();
     this.ID_mesa = mesa.getIDmesa();
-    this.bebidaO = new Bebida(35.0f, comensal, mesa);
+    this.alimentos = alimentos;
+    this.estadoActual = Estado[0];
+
 
     // Demás comidas
     calcular_tiempo_de_preparacion();
@@ -35,26 +37,36 @@ public class Orden {
   }
 
   public void orden() {
-    System.out.println("Orden para: [COMENSAL] " + nombre_comensal + " (Mesa " + ID_mesa + ")");
-    System.out.println("Bebida: " + bebidaO.getBebida() + "..." + bebidaO.getPrecio());
-    // Aqui irian las demás comidas
+   System.out.println("Orden para: [COMENSAL] " + nombre_comensal + " (Mesa " + ID_mesa + ")");
+    for (Alimento a : alimentos) {
+      System.out.println(a.getNombre() + "..." + a.getPrecio());
+    }
   }
 
   public void calcular_tiempo_de_preparacion() {
-    this.Tiempo_preparacion =
-        bebidaO.getTiempoD(); // Aqui se sumarian todos los Tiempos de los alimentos.
-  }
+   this.Tiempo_preparacion = 0;
+    for (Alimento a : alimentos) {
+      this.Tiempo_preparacion += (int) a.getTiempoDP();
+    }
+  } // Aqui se sumarian todos los Tiempos de los alimentos.
 
   public void calcular_total() {
-    this.total = bebidaO.getPrecio(); // La suma de los precios
-  }
+   this.total = 0;
+    for (Alimento a : alimentos) {
+      this.total += a.getPrecio();
+    }
+  }// La suma de los precios
 
   public void setEstado() {
-    bebidaO.setEstado();
-    // Colocar los setEstado de los demás alimentos.
+    this.estadoActual = Estado[2];
+    for (Alimento a : alimentos) {
+      if (a instanceof Bebida) {
+        ((Bebida) a).setEstado();
+      }
+    }
   }
-
+    // Colocar los setEstado de los demás alimentos.
   public String getEstado() {
-    return bebidaO.getEstado(); // Aqui se tomaria el estado de todos los alimentos
+    return this.estadoActual; // Aqui se tomaria el estado de todos los alimentos
   }
 }
