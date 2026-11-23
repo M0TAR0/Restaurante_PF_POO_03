@@ -10,6 +10,8 @@ public class mainRestaurante {
   final int TOTAL_COMENSALES = 20;
   int cobrados = 0;
   float ganancia_total = 0;
+  int SumaCalificaciones = 0;
+  int totalCalificaciones = 0;
 
   // ===== PRIORITY QUEUE =====
 
@@ -55,6 +57,19 @@ public class mainRestaurante {
     cobrados++;
   }
 
+  public synchronized void registrar_calificacion(int calificacion) {
+    SumaCalificaciones += calificacion;
+    totalCalificaciones++;
+  }
+
+  public synchronized double obtener_promedio() {
+    if (totalCalificaciones == 0) {
+        return 0;
+    }
+    double promedio = SumaCalificaciones / totalCalificaciones;
+    return promedio;
+  }
+
   // ===== AQUÍ EMPIEZA LA FUNCION MAIN ======
 
   public void iniciar()
@@ -70,13 +85,17 @@ public class mainRestaurante {
       meseros[i].start();
     }
 
+    Comensal[] comensales = new Comensal[TOTAL_COMENSALES];
     for (int i = 0; i < TOTAL_COMENSALES; i++) {
-      Thread comensal = new Comensal(10, 10, this);
-      comensal.start();
+      comensales[i] = new Comensal(this);
+      comensales[i].start();
     }
 
     for (int i = 0; i < 3; i++) {
       meseros[i].join(); // Espera a que los meseros terminen
+    }
+    for (int i = 0; i < TOTAL_COMENSALES; i++) {
+      comensales[i].join(); // Espera a que los comensales terminen (para confirmar que todos calificaron)
     }
 
     System.out.println("=================================================");
@@ -87,6 +106,7 @@ public class mainRestaurante {
     System.out.println("Meseros en turno : 3");
     System.out.println("-------------------------------------------------");
     System.out.println("Ganancia Total Facturada : $" + ganancia_total + " MXN");
+    System.out.println("Calificación del restaurante  : " + String.format("%.2f", obtener_promedio()) + " / 5 estrellas");
     System.out.println("=================================================");
   }
 

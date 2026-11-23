@@ -3,28 +3,18 @@ import java.util.Random;
 /** Comensal */
 public class Comensal extends Persona {
   // Atributos básicos
-  private float tiempoL;
-  private float tiempoF;
   private mainRestaurante restaurante;
   private Orden ordenComensal;
   private boolean servido = false; 
   private int tiempo_de_espera; 
 
   // Método constructor
-  public Comensal(float tiempoL, float tiempoF, mainRestaurante restaurante) {
+  public Comensal(mainRestaurante restaurante) {
     this.restaurante = restaurante;
-    this.tiempoL = tiempoL;
-    this.tiempoF = tiempoF;
+
   }
 
-  public float getTiempoL() {
-    return this.tiempoL;
-  }
-
-  public float getTiempoF() {
-    return this.tiempoF;
-  }
-
+  //Getters y Setters
   public Orden getOrden() {
     return this.ordenComensal;
   }
@@ -47,8 +37,6 @@ public class Comensal extends Persona {
       System.out.println("Error en la espera del comensal");
     }
   }
-
-  public void ver_menu() {}
 
   public void solicitar_mesa(Mesa mesa) {
     System.out.println("[COMENSAL] " + getNombre() + " Solicita mesa.");
@@ -88,7 +76,12 @@ public class Comensal extends Persona {
     restaurante.agregar_accion(3, orden);
   }
 
-  public void calificar() {}
+  public void calificar() {
+    Random random = new Random();
+    int calificacion = random.nextInt(6);
+    System.out.println("[COMENSAL] " + getNombre() + " califica con " + calificacion + " estrellas");
+    restaurante.registrar_calificacion(calificacion);
+  }
 
   @Override
   public void run() {
@@ -107,6 +100,7 @@ public class Comensal extends Persona {
       }
     }
     this.comer();
+    this.calificar();
     this.solicitar_cuenta(this.getOrden());
   }
 }
