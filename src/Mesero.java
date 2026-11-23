@@ -52,8 +52,7 @@ public class Mesero extends Persona {
     }
     System.out.println(
         "[MESERO] " + this.getNombre() + " tomó la orden de [COMENSAL] " + comensal.getNombre());
-    // Pendiente: pasar la lista de alimentos a Orden cuando esté desarrollada
-    return new Orden(comensal, mesa);
+    return new Orden(comensal, mesa, alimentos);
   }
 
   public void llevar_a_cocina(Orden orden) {
