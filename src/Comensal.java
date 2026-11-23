@@ -7,7 +7,8 @@ public class Comensal extends Persona {
   private float tiempoF;
   private mainRestaurante restaurante;
   private Orden ordenComensal;
-  private boolean servido = false; // El mesero lo cambia al entregar la orden
+  private boolean servido = false; 
+  private int tiempo_de_espera; 
 
   // Método constructor
   public Comensal(float tiempoL, float tiempoF, mainRestaurante restaurante) {
@@ -37,6 +38,16 @@ public class Comensal extends Persona {
   }
 
   // Métodos o acciones del Comensal
+  public void esperar() { // Método empleado para simular el tiempo de espera de un comensal
+    Random random = new Random();
+    tiempo_de_espera = random.nextInt(300, 600); // Tiempo de espera: 3 a 6 s 
+    try {
+      sleep(tiempo_de_espera);
+    } catch (Exception e) {
+      System.out.println("Error en la espera del comensal");
+    }
+  }
+
   public void ver_menu() {}
 
   public void solicitar_mesa(Mesa mesa) {
@@ -81,6 +92,9 @@ public class Comensal extends Persona {
 
   @Override
   public void run() {
+
+    // Llegada y espera: el comensal espera un tiempo antes de pasar a su mesa
+    this.esperar();
 
     // Falta: asignación real de mesa
     Mesa mesa = new Mesa(this);
