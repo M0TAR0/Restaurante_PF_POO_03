@@ -29,7 +29,7 @@ public class Persona extends Thread {
     String nombre_generado = "";
 
     final String[] Lista_nombres = {"Diego", "Romel", "Aldo", "Ivan", "Brandon"};
-    final String[] Lista_apellidos = {"May", "Guadarrama", "Ontiveros", "Crisostomo", "Codova"};
+    final String[] Lista_apellidos = {"May", "Guadarrama", "Ontiveros", "Crisostomo", "Cordova"};
 
     Random random = new Random();
     int indxN = random.nextInt(Lista_nombres.length);
