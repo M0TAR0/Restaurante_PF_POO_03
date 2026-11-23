@@ -42,15 +42,21 @@ public class mainRestaurante {
   PriorityQueue<Accion> acciones = new PriorityQueue<>();
 
   // El mesero crea la Orden a partir de los alimentos
-  public void agregar_accion(int prioridad, Comensal comensal, Mesa mesa, Alimento[] alimentos) {
+  public synchronized void agregar_accion(
+      int prioridad, Comensal comensal, Mesa mesa, Alimento[] alimentos) {
     acciones.add(new Accion(prioridad, comensal, mesa, alimentos));
   }
 
-  public void agregar_accion(int prioridad, Orden orden) {
+  public synchronized void agregar_accion(int prioridad, Orden orden) {
     acciones.add(new Accion(prioridad, orden));
   }
 
-  public void registrar_cobro(float monto) {
+  // Saca la acción de mayor prioridad (null si no hay)
+  public synchronized Accion siguiente_accion() {
+    return acciones.poll();
+  }
+
+  public synchronized void registrar_cobro(float monto) {
     ganancia_total += monto;
     cobrados++;
   }

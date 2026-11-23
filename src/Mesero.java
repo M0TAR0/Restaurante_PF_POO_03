@@ -102,7 +102,7 @@ public class Mesero extends Persona {
   @Override
   public void run() {
     while (restaurante.cobrados < restaurante.TOTAL_COMENSALES) {
-      mainRestaurante.Accion accion = restaurante.acciones.poll(); // Toma la de mayor prioridad
+      mainRestaurante.Accion accion = restaurante.siguiente_accion(); // Toma la de mayor prioridad
       if (accion == null) { // No hay acciones, espera un momento
         try {
           sleep(50);
