@@ -1,14 +1,11 @@
 public class Alimento {
     private String nombre;
     private float precio;
-    private float Tiempo_de_preparacion;
-    //private String Lista_P[];
 
     //Método constructor
-    public Alimento(String nombre,float precio,float Tiempo_de_preparacion){
+    public Alimento(String nombre,float precio){
         setNombre(nombre);
         this.precio=precio;
-        this.Tiempo_de_preparacion=Tiempo_de_preparacion;
     }
     
     //Métodos getters y setters.
@@ -27,14 +24,4 @@ public class Alimento {
     public void setPrecio(float precio){
         this.precio=precio;
     }
-    
-    public float getTiempoDP(){
-        return this.Tiempo_de_preparacion;
-    }
-    
-    public void setTiempoDP(float Tiempo_de_preparacion){
-        this.Tiempo_de_preparacion=Tiempo_de_preparacion;
-    }
-    
-
 }

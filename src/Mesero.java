@@ -10,14 +10,9 @@
 //
 // Las clases relacionadas directamente con esta son: Comensal, Mesa y Cocina
 
-import java.util.Random;
-
 public class Mesero extends Persona {
 
   // ATRIBUTOS
-  Random random = new Random();
-  int tiempo_de_traslado;
-  public boolean mesero_libre = true;
   Cocina cocina;
   mainRestaurante restaurante;
 
@@ -33,18 +28,8 @@ public class Mesero extends Persona {
   // 4. Cuando el cliente lo solicite el mesero cobra
   // 5. El mesero genera un ticket de la orden
 
-  public void moverse() { // Método empleado para simular la traslación de un mesero
-    tiempo_de_traslado = random.nextInt(3000, 6000); // Tiempo de traslado entre 3 y 6 segundos
-    try {
-      sleep(tiempo_de_traslado);
-    } catch (Exception e) {
-      System.out.println("Error en traslado de mesero");
-    }
-  }
-
   // Toma los alimentos que el comensal quiere pedir y crea la orden
   public Orden tomar_orden(Comensal comensal, Mesa mesa, Alimento[] alimentos) {
-    this.moverse();
     try {
       sleep(500); // Toma de orden: 5 s simulados
     } catch (Exception e) {
@@ -56,21 +41,18 @@ public class Mesero extends Persona {
   }
 
   public void llevar_a_cocina(Orden orden) {
-    this.moverse();
     cocina.preparar(orden.getIDmesa());
     // Cuando la cocina termina, se agenda la acción de servir
     restaurante.agregar_accion(1, orden);
   }
 
   public void entregar_orden(Orden orden) {
-    this.moverse();
     System.out.println(
         "[MESERO] " + this.getNombre() + " entregó la orden en la mesa " + orden.getIDmesa());
     orden.getComensal().setServido(true); // Avisa al comensal que ya puede comer
   }
 
   public void cobrar(Orden orden,Comensal comensal) {
-    this.moverse();
     try {
       sleep(200); // Cobro y ticket: 2 s simulados
     } catch (Exception e) {
@@ -78,6 +60,7 @@ public class Mesero extends Persona {
     }
     this.generar_ticket(orden,comensal);
     restaurante.registrar_cobro(orden.getTotal());
+    comensal.setPagado(true); // Avisa al comensal que ya pagó
   }
 
   public void generar_ticket(Orden orden, Comensal comensal) {
@@ -98,9 +81,9 @@ public class Mesero extends Persona {
   // MÉTODO RUN:
   // Método principal del hilo, que llevará la lógica de las acciones a realizar por cada mesero:
   // 1. Si el mesero está libre esperar a que haya una actividad por hacer
-  // 2. Al encontrar una actividad, cambiar a ocupado y evaluar qué hacer para cada actividad
-  // 3. Realizar la acción: Traslado + Ejecutar acción
-  // 4. Cambiar a desocupado y repetir
+  // 2. Al encontrar una actividad, evaluar qué hacer según su prioridad
+  // 3. Ejecutar la acción
+  // 4. Repetir
   // Las acciones se guardan en una cola de prioridad (mainRestaurante):
   // 1 = servir comida, 2 = tomar orden y llevar a cocina, 3 = cobrar
 
@@ -117,8 +100,6 @@ public class Mesero extends Persona {
         continue;
       }
 
-      mesero_libre = false;
-
       switch (accion.prioridad) {
         case 1:
           entregar_orden(accion.orden);
@@ -134,7 +115,6 @@ public class Mesero extends Persona {
           }
           break;
       }
-      mesero_libre = true;
     }
   }
 }
