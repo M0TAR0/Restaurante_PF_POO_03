@@ -1,36 +1,58 @@
 # PLANEACIÓN
 
-Este documento tiene como finalidad desglosar todos los recursos y elementos a utilizar y desarrollar durante la elaboración del proyecto. Se describirán los procesos a ejecutar, las clases a implementar y especificaciones adicionales a considerar por el equipo.
+Este documento tiene como finalidad desglosar todos los recursos y elementos a utilizar y desarrollar durante la elaboración del proyecto. Se describen los procesos a ejecutar, las clases implementadas y especificaciones adicionales a considerar por el equipo.
 
 ## CLASES
 
-Esta sección cubre las clases a emplear para la elaboración del proyecto. Cada una deberá incluir una descripción de su funcionalidad, sus atributos y métodos.
+Esta sección cubre las clases empleadas en el proyecto, con su funcionalidad, atributos y métodos principales.
 
 ### **Personas**
 
-#### Comensal
+#### Persona
+
+Clase padre de Comensal y Mesero. Extiende `Thread` y asigna un nombre aleatorio.
 
 _A t r i b u t o s_
 
-- Nombre
-- Tiempo de llegada
-- Tiempo de frustracion (Lo que tardan en querer irse si no los atienden)
+- nombre
 
 _M é t o d o s_
 
-- ver_menu()
+- getNombre()
+- generarNombre()
+
+#### Comensal
+
+Cliente del restaurante. Recorre todo el ciclo de atención.
+
+_A t r i b u t o s_
+
+- restaurante
+- ordenComensal
+- servido
+- pagado
+- tiempo_de_espera (Lo que tarda en llegar)
+- alimentos []
+- mesa
+
+_M é t o d o s_
+
+- esperar()
 - solicitar_mesa()
 - solicitar_comida()
 - comer()
 - solicitar_cuenta()
 - calificar()
+- run()
 
 #### Mesero
 
+Atiende las acciones pendientes según su prioridad.
+
 _A t r i b u t o s_
 
-- Nombre
-- Tiempo_de_espera (Lo que tarda en atender a un comensal)
+- cocina
+- restaurante
 
 _M é t o d o s_
 
@@ -39,16 +61,18 @@ _M é t o d o s_
 - entregar_orden()
 - cobrar()
 - generar_ticket()
+- run()
 
 ### **Productos**
 
 #### Alimento
 
+Clase padre de los productos del menú.
+
 _A t r i b u t o s_
 
-- Nombre
-- Precio
-- Tiempo_de_preparacion
+- nombre
+- precio
 
 ##### Comida
 
@@ -56,91 +80,136 @@ _A t r i b u t o s_
 
 ##### Postre
 
+Cada una elige al azar un producto de su catálogo (5 opciones con su precio).
+
 #### Orden
+
+Reúne al comensal, la mesa y los alimentos pedidos.
 
 _A t r i b u t o s_
 
-- Nombre_comensal
-- ID_MESA
-- Lista_productos []
-- Estado (En proceso, lista, entregada) //Para controlar cuando entregar ordenes o cuentas. Privada
-- Tiempo_preparacion
+- comensal
+- nombre_comensal
+- ID_mesa
+- alimentos []
 - total
 
 _M é t o d o s_
 
-- calcular_tiempo_de_preparacion()
 - calcular_total()
-- set_estado()
-- get_estado()
 
 ### **Apartados**
 
-#### Cocina
+#### mainRestaurante
+
+Clase principal. Crea las mesas, la cocina, los meseros y los comensales, e imprime el reporte final.
 
 _A t r i b u t o s_
 
-- Lista_ordenes []
-- Tiempo_de_finalizacion (Lo que tarda en preparar las ordenes pendientes)
+- TOTAL_COMENSALES
+- TOTAL_MESAS
+- mesas []
+- mesasLibres
+- acciones (cola de prioridad)
+- cobrados
+- ganancia_total
+- SumaCalificaciones
+- totalCalificaciones
 
 _M é t o d o s_
 
-- recibir_orden()
-- preparar_orden()
+- agregar_accion()
+- siguiente_accion()
+- asignar_mesa()
+- liberar_mesa()
+- registrar_cobro()
+- getCobrados()
+- registrar_calificacion()
+- obtener_promedio()
+- imprimir_bienvenida()
+- iniciar()
+- main()
+
+#### Accion (clase interna de mainRestaurante)
+
+Tarea pendiente para un mesero. Se ordena por prioridad.
+
+_A t r i b u t o s_
+
+- prioridad
+- orden
+- comensal
+- mesa
+- alimentos []
+
+_M é t o d o s_
+
+- compareTo()
+
+#### Cocina
+
+Recurso compartido: prepara una orden a la vez.
+
+_M é t o d o s_
+
+- preparar() (synchronized)
 
 #### Mesa
 
 _A t r i b u t o s_
 
 - ID_MESA (número de mesa)
-- Nombre_comensal
-- Estado ¿?
-
-### Extra
-
-#### Adicionales - Clase para manejar información adicional de aleatoriedad
-
-_A t r i b u t o s_
-
-- Lista_nombres [] //nombres aleatorios
-- Lista_apellidos [] //apellidos aleatorios
+- Estado (libre u ocupada)
 
 _M é t o d o s_
 
-- generar_nombre_aleatorio()
+- getIDmesa()
+- getEstado()
+- setEstado()
 
 ## HILOS
 
-En esta sección se describirán los procesos a realizar durante el programa, los cuáles serán ejecutada de manera paralela por medio de hilos.
+En esta sección se describen los procesos del programa, los cuales se ejecutan de manera paralela por medio de hilos.
 
 ### 20 Hilos - COMENSALES
 
-Cada hilo representará a un comensal, el cuál realizará una de estas acciones:
+Cada hilo representa a un comensal, el cual realiza estas acciones en orden:
 
-- LLegar y solicitar una mesa
-- - Si hay va a la mesa, si no empieza a esperar.
-- Ver el menú
-- Pedir de comer
+- Llegar y solicitar una mesa
+  - Si hay, va a la mesa; si no, espera a que se libere una.
+- Pedir de comer (bebida, plato fuerte y, opcionalmente, postre)
+- Esperar su orden
 - Comer
-- Solicitar cuenta
-- Pagar (Tarjeta, efectivo)
-- Dejar una reseña
-- Irse
+- Solicitar la cuenta
+- Pagar
+- Calificar (número entero de 0 a 5 al azar)
+- Liberar la mesa e irse
 
 ### 3 Hilos - MESEROS
 
-Cada hilo representará a un mesero, los cuáles podrán realizar una de estas acciones (si están disponibles):
+Cada hilo representa a un mesero, el cual toma de la cola la acción de mayor prioridad:
 
-- Tomar orden
-- Llevar orden a cocina
-- LLevar orden a mesa
-- Cobrar
+1. Llevar la orden a la mesa
+2. Tomar la orden y llevarla a la cocina (permanece ahí hasta que está lista)
+3. Cobrar y generar el ticket
+
+## TIEMPOS
+
+| Actividad              | Tiempo real      |
+| ---------------------- | ---------------- |
+| Llegada del comensal   | 300 a 600 ms     |
+| Toma de orden          | 500 ms           |
+| Preparación en cocina  | 800 ms           |
+| Consumo de alimentos   | 1,000 a 2,000 ms |
+| Cobro y ticket         | 200 ms           |
 
 ## IDEAS ADICIONALES
 
-En esta sección mencionaremos ideas adicionales a implementar para el programa, las cuales se podrán ir añadiendo conforme la funcinoalidad principal del programa sea completada.
+Ideas que quedaron fuera de esta versión y podrían añadirse después.
 
 **Lista de Ideas**
 
 - Hacer todos los tiempos aleatorios
-- Que los meseros puedan limpiar mesas tambien
+- Que los meseros puedan limpiar mesas también
+- Tiempo de frustración (lo que tarda un comensal en irse si no lo atienden)
+- Elegir forma de pago (tarjeta o efectivo)
